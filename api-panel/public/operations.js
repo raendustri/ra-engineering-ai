@@ -86,4 +86,17 @@ $('reload').addEventListener('click',()=>loadList(current).catch(e=>report('mess
 $('cancelEdit').addEventListener('click',resetEdit);
 $('recordForm').addEventListener('submit',async e=>{e.preventDefault();report('message','');try{const values=formData(e.target);const wasEdit=editing!==null;const route='/api/ops/'+current+(wasEdit?'/'+editing:'');await request(route,{method:wasEdit?'PATCH':'POST',body:JSON.stringify(values)});report('message',wasEdit?'Kayıt güncellendi':'Kayıt eklendi');await loadList(current);resetEdit();}catch(e){report('message',e.message,true);}});
 $('quoteForm').addEventListener('submit',async e=>{e.preventDefault();report('quoteMessage','');try{const v=formData(e.target);const r=await request('/api/ops/quotes',{method:'POST',body:JSON.stringify(v)});const q=r.item;const metrics=[['Malzeme ağırlığı',fmt(q.material_kg)+' kg'],['Malzeme + fire',money(q.material_total_try)],['Makine + hazırlık',money(q.machine_total_try)],['Direkt maliyet',money(q.direct_total_try)],['KDV hariç teklif',money(q.offer_total_try)],['Kâr için eklenen oran',fmt(q.markup_pct)+' %']];$('quoteResult').hidden=false;$('quoteResult').replaceChildren(...metrics.map(([k,v])=>{const d=node('div');d.append(node('span',k),node('b',v));return d;}));report('quoteMessage','Teklif #'+q.id+' kaydedildi. Fiyatı onaylamadan önce diğer giderleri kontrol edin.');await loadQuotes();}catch(e){report('quoteMessage',e.message,true);}});
+
+$('previewQuote').addEventListener('click',async()=>{
+  report('quoteMessage','');
+  try {
+    const values=formData($('quoteForm'));
+    const response=await request('/api/ops/quote-preview',{method:'POST',body:JSON.stringify(values)});
+    const q=response.quote;
+    const metrics=[['Malzeme ağırlığı',fmt(q.material_kg)+' kg'],['Malzeme + fire',money(q.material_total_try)],['Makine + hazırlık',money(q.machine_total_try)],['Direkt maliyet',money(q.direct_total_try)],['KDV hariç teklif',money(q.offer_total_try)],['Kâr için eklenen oran',fmt(q.markup_pct)+' %']];
+    $('quoteResult').hidden=false;
+    $('quoteResult').replaceChildren(...metrics.map(([k,v])=>{const d=node('div');d.append(node('span',k),node('b',v));return d;}));
+    report('quoteMessage','Önizleme hesaplandı. Müşteri teklifi olarak kaydedilmedi.');
+  } catch(e) { report('quoteMessage',e.message,true); }
+});
 init().catch(e=>{$('login').hidden=false;$('loginError').textContent='Sunucuya bağlanılamadı: '+e.message;});

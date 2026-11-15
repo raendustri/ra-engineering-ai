@@ -35,3 +35,10 @@ Mevcut `docs/` mühendislik rehberleri ve `cases/` iş örnekleri korunmuştur.
 - [MVP mimarisi, güvenlik ve yol haritası](docs/08_MVP_Implementation_Plan.md)
 - Başlangıç: `cd api-panel` → `.env.example` dosyasını `.env` kopyalayın → `DASHBOARD_PASSWORD` belirleyin → `npm test` → `npm start`.
 - Not: Canlı ChatGPT Sites uygulaması ile aynı deploy değildir. Canlı sürüm henüz güncellenmedi.
+
+
+## İlk gelişim paketi: merkezi iş kayıtları ve teklif önizleme
+
+Ana dalda zaten bulunan `api-panel/operations-db.mjs` ortak SQLite kayıtları, `/api/ops/*` API'si ve `/operations` ekranı **tek veri kaynağı** olarak korunur. Yeni taslak değişiklikler teklifin **kaydedilmeden hesaplanmasını** ve buna ilişkin HTTP testlerini ekler.
+
+[Altı önceliğin uygulama planı](docs/09_Development_Roadmap_v1.md). Bu GitHub modülü canlı ChatGPT Sites'ın otomatik dağıtımı değildir.
