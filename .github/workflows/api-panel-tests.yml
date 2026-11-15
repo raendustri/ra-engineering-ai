@@ -1,0 +1,28 @@
+name: API panel testleri
+
+on:
+  push:
+    paths:
+      - 'api-panel/**'
+      - '.github/workflows/api-panel-tests.yml'
+  pull_request:
+    paths:
+      - 'api-panel/**'
+      - '.github/workflows/api-panel-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kaynak kodunu al
+        uses: actions/checkout@v4
+      - name: Node.js yukle
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: API panel testlerini calistir
+        working-directory: api-panel
+        run: npm test
