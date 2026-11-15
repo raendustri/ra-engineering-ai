@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="tr"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0c1018"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="RA API">
+  <link rel="manifest" href="/manifest.json"><link rel="icon" href="/icon.svg"><link rel="stylesheet" href="/styles.css">
+  <title>RA Engineering AI | API Kullanımı</title>
+</head><body>
+  <header class="header"><div class="mark">RA</div><div class="brand"><strong>RA Engineering AI</strong><small>API KULLANIM VE MALİYET PANELİ</small></div><button class="quiet" id="logout" hidden>Çıkış</button></header>
+  <main>
+    <section id="login" class="login card" hidden><div class="eyebrow">GÜVENLİ GİRİŞ</div><h1>İşletme API paneli</h1><p class="muted">Aynı hesapla PC ve telefondan giriş yapabilirsin. Şifre yalnızca RA AI sunucusunda kontrol edilir.</p><form id="loginForm"><label for="password">Panel şifresi</label><input type="password" id="password" autocomplete="current-password" required placeholder="Panel şifreniz"><button type="submit" class="primary">Giriş yap</button></form><p id="loginError" class="error" role="status"></p></section>
+    <section id="dashboard" hidden>
+      <div class="headrow"><div><div class="eyebrow">KURUMSAL KONTROL MERKEZİ</div><h1>API kullanımı</h1><p class="muted">Gerçek token kullanımını ve son doğrulanan kredi bakiyeni tek ekranda takip et.</p></div><button class="outline" id="refresh">↻ Yenile</button></div>
+      <div class="cards">
+        <div class="card metric"><div class="meta">DOĞRULANAN API KREDİSİ <span class="dot amber"></span></div><div class="value" id="balance">—</div><div class="hint" id="balanceAt">Henüz kayıt girilmedi</div><button id="openBalance" class="linkbutton">Bakiyeyi güncelle</button></div>
+        <div class="card metric"><div class="meta">BU AY API MALİYETİ</div><div class="value" id="spent">—</div><div class="hint">OpenAI maliyet API'sinden • USD</div></div>
+        <div class="card metric"><div class="meta">BU AY GİRİŞ TOKENİ</div><div class="value" id="inputTokens">—</div><div class="hint">Modelin okuduğu tokenler</div></div>
+        <div class="card metric"><div class="meta">BU AY ÇIKIŞ TOKENİ</div><div class="value" id="outputTokens">—</div><div class="hint">Modelin ürettiği tokenler</div></div>
+      </div>
+      <div class="twocol">
+        <div class="card section"><div class="sectionhead"><div><div class="eyebrow">TOKEN HAREKETLERİ</div><h2>Son 14 gün</h2></div><span class="muted tiny">Günler UTC</span></div><div id="chart" class="chart"><p class="muted">Veri bekleniyor.</p></div><div class="legend"><span><i class="barcolor in"></i>Giriş</span><span><i class="barcolor out"></i>Çıkış</span></div></div>
+        <div class="card section"><div class="eyebrow">HESAP DURUMU</div><h2>Veri kaynakları</h2><div class="statusline"><span>API raporu</span><b id="apiStatus">Kontrol ediliyor</b></div><div class="statusline"><span>İstek sayısı</span><b id="requests">—</b></div><div class="statusline"><span>Önbellekten okunan giriş</span><b id="cachedTokens">—</b></div><div class="statusline"><span>Rapor kapsamı</span><b id="scope">—</b></div><p class="note" id="apiNote"></p><p class="note">Kredi tutarı <strong>canlı otomatik bakiye değildir</strong>: son kez OpenAI fatura ekranından kontrol edilip kaydedilen USD değeridir.</p><a class="external" href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener noreferrer">Resmî OpenAI bakiye ekranını aç ↗</a></div>
+      </div>
+      <p class="footnote">RA Engineering AI • Veriler telefon ve PC'de aynı sunucudan gelir. API anahtarları tarayıcıya gönderilmez. Harcamalar OpenAI raporlamasında gecikmeli görünebilir.</p>
+    </section>
+    <dialog id="balanceDialog"><form method="dialog" id="balanceForm" class="dialogbody"><div class="eyebrow">KREDİ TAKİBİ</div><h2>Doğrulanan bakiye</h2><p class="muted">OpenAI Billing sayfasında gördüğün mevcut USD tutarını buraya gir. Bu tutar otomatik çekilmez; kaydettiğinde iki cihazda aynı görünür.</p><label for="usd">Kalan kredi (USD)</label><input id="usd" inputmode="decimal" placeholder="Örn. 8.75" required type="number" min="0" max="10000000" step="0.01"><div class="buttons"><button type="button" id="cancelBalance" class="outline">İptal</button><button class="primary" type="submit">Kaydet</button></div><p class="error" id="balanceError"></p></form></dialog>
+  </main><script type="module" src="/app.js"></script>
+</body></html>

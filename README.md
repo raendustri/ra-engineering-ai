@@ -1,2 +1,30 @@
-# ra-engineering-ai
-RA Endüstri Engineering AI Project
+# RA Engineering AI
+
+RA Endüstri'nin mühendislik, CNC router iş analizi, üretim kayıtları ve işletme çalışma alanı projesi.
+
+## Canlı uygulama
+
+[RA Engineering AI (ChatGPT Sites)](https://ra-engineering-ai.orangetoad4.chatgpt.site)
+
+> **Önemli:** Canlı uygulama bir ChatGPT Sites projesidir. Bu GitHub deposu henüz canlı Site'ın **tam kaynak kodunu** içermez. Buraya commit yapmak tek başına canlı Site'ı güncellemez.
+
+## API kullanım ve bakiye paneli
+
+Yeni modülün kaynakları [`api-panel/`](api-panel/) klasöründedir:
+
+- OpenAI Organization Usage ve Costs raporları
+- Giriş/çıkış tokenleri, önbellekte kullanılan tokenler ve istekler
+- Günlük kullanım grafiği
+- Son doğrulanan API kredisi (USD) — manuel, zaman damgalı
+- Telefon ve PC'de aynı sunucudan paylaşılan veri
+- Sunucu tarafında tutulan API yönetici anahtarı, oturum kontrolü
+
+Kurulum: [`api-panel/README_TR.md`](api-panel/README_TR.md)
+
+Mevcut Sites uygulamasına güvenli entegre etme: [`api-panel/INTEGRATION_SITES.md`](api-panel/INTEGRATION_SITES.md)
+
+**Durum:** Modül hazır ve yerel testlerden geçti. ChatGPT Sites projesine kaynak erişimi sağlanıp yeniden yayımlanmadan canlı uygulamaya eklenmiş sayılmaz. Gerçek kullanıcı API bakiyesi/kullanımı bu depoda bulunmaz.
+
+## Diğer belgeler
+
+Mevcut `docs/` mühendislik rehberleri ve `cases/` iş örnekleri korunmuştur.

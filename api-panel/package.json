@@ -1,0 +1,12 @@
+{
+  "name": "ra-ai-api-panel",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "RA Engineering AI icin korunmus OpenAI API kullanim ve kredi takip modulu",
+  "scripts": {
+    "start": "node --env-file=.env server.mjs",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20.12" }
+}
