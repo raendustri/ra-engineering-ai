@@ -32,6 +32,8 @@ test('HTTP giris yetkisi, CRUD, teklif, bagimsiz istemci senkronu',async t=>{
  x=await json('/api/ops/customers','POST',{name:'Fail',email:'invalid'});assert.equal(x.status,400);
  x=await json('/api/ops/customers','POST',{name:'Fail'}, {Origin:'https://evil.test'});assert.equal(x.status,403);
  const q={customer_id:customer.id,title:'Test quote',quantity:2,blank_x_mm:100,blank_y_mm:100,blank_z_mm:10,density_g_cm3:1.4,price_try_kg:100,machine_eur_hour:50,eur_try:50,cut_minutes_per_unit:10,setup_minutes:5,waste_pct:10,markup_pct:25};
+ x=await json('/api/ops/quote-preview','POST',q);assert.equal(x.status,200);assert.equal(x.body.quote.offer_total_try,1340.59);
+ x=await json('/api/ops/quotes','GET');assert.equal(x.body.items.length,0);
  x=await json('/api/ops/quotes','POST',q);assert.equal(x.status,201);assert.equal(x.body.item.offer_total_try,1340.59);
  r=await fetch(url+'/api/ops/quotes',{headers:{Cookie:cookie}});assert.equal((await r.json()).items[0].offer_total_try,1340.59);
 });

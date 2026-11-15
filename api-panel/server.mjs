@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {monthStartUTC, sumCosts, sumUsage, dailyUsage} from './metrics.mjs';
-import {OperationsDB, OP_ENTITIES} from './operations-db.mjs';
+import {OperationsDB, OP_ENTITIES, calculateQuote} from './operations-db.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(root,'.data');
@@ -164,6 +164,11 @@ const server=http.createServer(async(req,res)=>{
     if (extra || !entity) return json(res,404,{error:'Bulunamadi'});
     try {
       if (entity==='overview' && !id && req.method==='GET') return json(res,200,operations.overview());
+      // Calculate without creating a quote or modifying customer data.
+      if (entity==='quote-preview' && !id && req.method==='POST') {
+        const input=await readJson(req);
+        return json(res,200,{quote:calculateQuote(input)});
+      }
       if (!OP_ENTITIES.includes(entity)) return json(res,404,{error:'Kayit tipi bulunamadi'});
       if (!id && req.method==='GET') return json(res,200,{items:operations.list(entity)});
       if (!id && req.method==='POST') return json(res,201,{item:operations.create(entity,await readJson(req))});
