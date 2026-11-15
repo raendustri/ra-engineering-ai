@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1018"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>RA Engineering AI | Üretim ve İşletme</title>
+<link rel="icon" href="/icon.svg"><link rel="stylesheet" href="/operations.css">
+</head><body>
+<header class="top"><div class="logo">RA</div><div><strong>RA Engineering AI</strong><small>Üretim ve işletme merkezi</small></div><div class="grow"></div><a class="headlink" href="/">API maliyet paneli</a><button id="logout" class="flat" hidden>Çıkış</button></header>
+<main>
+<section id="login" class="surface login" hidden><div class="eyebrow">İŞLETME GİRİŞİ</div><h1>Ortak çalışma alanı</h1><p>İki cihazda aynı güvenli sunucuya giriş yapın. Veriler yalnızca bu sunucuda tutulur.</p><form id="loginForm"><label for="password">Şifre</label><input id="password" type="password" required autocomplete="current-password" placeholder="Panel şifresi"><button class="primary">Giriş yap</button></form><p class="error" id="loginError" role="alert"></p></section>
+<section id="workspace" hidden>
+<div class="intro"><div><div class="eyebrow">RA ENDÜSTRİ / OPERASYON</div><h1>Üretim ve işletme merkezi</h1><p>Makine, malzeme, müşteri ve iş kayıtları PC ile telefon arasında aynı sunucudan açılır.</p></div><span class="chip">MVP • Sunucu üzerinde</span></div>
+<nav id="tabs" class="tabs" aria-label="Çalışma modülleri"></nav>
+<div class="surface" id="overview" hidden><h2>Genel durum</h2><div id="kpis" class="kpis"></div><p class="hint">Bu ekran mevcut kayıtları gösterir; canlı RA Engineering AI sitesiyle veri aktarımı henüz yapılmadı. Eski tarayıcı kayıtları bu veritabanında otomatik görünmez.</p></div>
+<div class="surface" id="editor" hidden><div class="sectionhead"><div><h2 id="sectionTitle">Kayıtlar</h2><p id="sectionDesc" class="hint"></p></div><button id="reload" class="flat">↻ Yenile</button></div><div id="formBox" class="formbox"><form id="recordForm"><h3 id="formTitle">Yeni kayıt</h3><div class="fields" id="fields"></div><div class="buttons"><button id="save" class="primary" type="submit">Kaydet</button><button id="cancelEdit" class="flat" type="button" hidden>Vazgeç</button></div></form></div><p id="message" class="notice" role="status"></p><div class="tablewrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="surface" id="quotes" hidden><h2>Teklif / CNC maliyet hesaplayıcı</h2><p class="hint">Fiyatlar KDV hariçtir. Malzeme ebatları kesilecek stok parça ölçüsüdür. Kur ve fiyatları kendiniz girin; takım aşınması, kargo ve ek giderler otomatik eklenmez.</p><form id="quoteForm"><div class="fields" id="quoteFields"></div><div class="buttons"><button class="primary">Teklifi hesapla ve kaydet</button></div></form><p id="quoteMessage" class="notice" role="status"></p><div id="quoteResult" class="quote-result" hidden></div><div class="tablewrap"><table><thead id="quotesHead"></thead><tbody id="quotesBody"></tbody></table></div></div>
+<p class="footer">RA Engineering AI • Sistem yöneticisi erişimi • Kalıcı disk + güvenli HTTPS gereklidir</p>
+</section>
+</main><script type="module" src="/operations.js"></script>
+</body></html>

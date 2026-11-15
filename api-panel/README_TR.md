@@ -50,3 +50,21 @@ Bu teslimat, **mevcut RA Engineering AI uygulamasına entegre edilebilecek bağ�
 - OpenAI Usage: https://developers.openai.com/api/reference/typescript/resources/admin/subresources/organization
 - Kullanım ve Billing ayrımı: https://help.openai.com/en/articles/10478918-reviewing-api-usage-and-costs
 - Resmi Billing: https://platform.openai.com/settings/organization/billing/overview
+
+
+## Üretim ve işletme MVP modülleri (15.11.2026)
+Bu sürümde mevcut API paneli korunmuş, **`/operations`** yoluna ortak üretim ve işletme ekranı eklenmiştir.
+
+- Makine, freze, malzeme: ekle / listele / düzenle; kayıt doğrulama seçeneği.
+- Denemeler: makine, malzeme ve takım ilişkisi; devir, ilerleme, paso, sonuç ve onay.
+- Müşteri, sipariş: bağlantılı kayıtlar, teslim tarihi ve iş durumu.
+- CNC teklif hesaplayıcı: malzeme hacmi × yoğunluk, malzeme TL/kg, fire, CNC dakika × EUR/saat × kullanıcının girdiği EUR/TRY, hazırlık ve maliyet üzeri ekleme oranı. KDV/lojistik/diğer giderler **dahil değil**.
+- Ortak veritabanı: `RA_DB_PATH` ile belirtilen SQLite dosyası, aksi hâlde `.data/ra-operations.sqlite`. Telefon ve PC aynı sunucuya bağlanırsa aynı bilgileri görür.
+
+**Yeni asgari Node.js:** 22.16; 24.15+ önerilir. `node:sqlite` eski sürümlerde deneysel uyarı gösterebilir.
+
+**Önemli:** Mevcut ChatGPT Sites uygulamasının kaynak kodu bu depoda olmadığından yeni modüller o canlı siteye henüz eklenmedi. Bunları ayrı API paneli sunucusunda çalıştırabiliriz. Canlı siteyle birleştirmek için kaynak kod / yayımlama erişimi gereklidir.
+
+**Yedekleme ve KVKK:** `.env` ve `.data` dizinlerini hiçbir zaman GitHub'a göndermeyin. Müşteri bilgileri için şifreli disk, HTTPS, erişim kontrolü, düzenli SQLite yedeği ve kurtarma testi planlayın.
+
+Geliştirme ve test planı: [`docs/08_MVP_Implementation_Plan.md`](../docs/08_MVP_Implementation_Plan.md).

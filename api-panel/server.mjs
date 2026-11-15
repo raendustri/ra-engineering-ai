@@ -4,10 +4,13 @@ import crypto from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {monthStartUTC, sumCosts, sumUsage, dailyUsage} from './metrics.mjs';
+import {OperationsDB, OP_ENTITIES} from './operations-db.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(root,'.data');
 const balancePath = path.join(dataDir,'verified-balance.json');
+// Keep this directory on persistent disk; it is NOT safe on ephemeral hosting.
+const operationsDbPath = process.env.RA_DB_PATH || path.join(dataDir,'ra-operations.sqlite');
 const host = process.env.HOST || '127.0.0.1';
 const port = Number(process.env.PORT || 4848);
 const adminKey = (process.env.OPENAI_ADMIN_KEY || '').trim();
@@ -24,6 +27,7 @@ if (!Number.isInteger(port) || port < 1024 || port > 65535) {
 
 const salt = crypto.randomBytes(32);
 const passwordHash = crypto.scryptSync(password, salt, 64);
+const operations = new OperationsDB(operationsDbPath);
 const sessions = new Map();
 const attempts = new Map();
 let cache = {until:0, value:null};
@@ -116,7 +120,7 @@ async function metrics(force=false) {
 }
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
 async function serveStatic(res,p) {
-  const known = {'/':'index.html','/index.html':'index.html','/app.js':'app.js','/styles.css':'styles.css','/manifest.json':'manifest.json','/icon.svg':'icon.svg'};
+  const known = {'/':'index.html','/index.html':'index.html','/app.js':'app.js','/styles.css':'styles.css','/manifest.json':'manifest.json','/icon.svg':'icon.svg','/operations':'operations.html','/operations.html':'operations.html','/operations.js':'operations.js','/operations.css':'operations.css'};
   const name=known[p];
   if (!name) return json(res,404,{error:'Bulunamadi'});
   try {
@@ -130,7 +134,7 @@ const server=http.createServer(async(req,res)=>{
   res.setHeader('Referrer-Policy','no-referrer');
   res.setHeader('Content-Security-Policy',"default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'");
   const p=new URL(req.url,'http://local').pathname;
-  if (req.method==='POST' && !sameOrigin(req)) return json(res,403,{error:'Origin uyusmuyor'});
+  if (['POST','PATCH','PUT','DELETE'].includes(req.method) && !sameOrigin(req)) return json(res,403,{error:'Origin uyusmuyor'});
   if (p==='/api/status' && req.method==='GET') return json(res,200,{authenticated:authenticated(req), adminConfigured:!!adminKey});
   if (p==='/api/login' && req.method==='POST') {
     const address=req.socket.remoteAddress||'unknown';
@@ -154,6 +158,22 @@ const server=http.createServer(async(req,res)=>{
     return json(res,200,{ok:true},{'Set-Cookie':`ra_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${secureCookie(req)}`});
   }
   if (p.startsWith('/api/') && !authenticated(req)) return json(res,401,{error:'Giris yapmaniz gerekiyor'});
+  if (p.startsWith('/api/ops/')) {
+    const fragments=p.slice('/api/ops/'.length).split('/');
+    const [entity, id, extra] = fragments;
+    if (extra || !entity) return json(res,404,{error:'Bulunamadi'});
+    try {
+      if (entity==='overview' && !id && req.method==='GET') return json(res,200,operations.overview());
+      if (!OP_ENTITIES.includes(entity)) return json(res,404,{error:'Kayit tipi bulunamadi'});
+      if (!id && req.method==='GET') return json(res,200,{items:operations.list(entity)});
+      if (!id && req.method==='POST') return json(res,201,{item:operations.create(entity,await readJson(req))});
+      if (id && req.method==='PATCH') return json(res,200,{item:operations.update(entity,id,await readJson(req))});
+      return json(res,405,{error:'Yontem desteklenmiyor'});
+    } catch(e) {
+      const message = e instanceof SyntaxError ? 'Gecersiz JSON' : (e.message==='too_large' ? 'Istek cok buyuk' : e.message);
+      return json(res,e.status||400,{error:String(message).slice(0,220)});
+    }
+  }
   if (p==='/api/summary' && req.method==='GET') {
     const m=await metrics(req.url.includes('refresh=1'));
     return json(res,200,{balance:await readBalance(),metrics:m});

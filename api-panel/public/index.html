@@ -9,7 +9,7 @@
   <main>
     <section id="login" class="login card" hidden><div class="eyebrow">GÜVENLİ GİRİŞ</div><h1>İşletme API paneli</h1><p class="muted">Aynı hesapla PC ve telefondan giriş yapabilirsin. Şifre yalnızca RA AI sunucusunda kontrol edilir.</p><form id="loginForm"><label for="password">Panel şifresi</label><input type="password" id="password" autocomplete="current-password" required placeholder="Panel şifreniz"><button type="submit" class="primary">Giriş yap</button></form><p id="loginError" class="error" role="status"></p></section>
     <section id="dashboard" hidden>
-      <div class="headrow"><div><div class="eyebrow">KURUMSAL KONTROL MERKEZİ</div><h1>API kullanımı</h1><p class="muted">Gerçek token kullanımını ve son doğrulanan kredi bakiyeni tek ekranda takip et.</p></div><button class="outline" id="refresh">↻ Yenile</button></div>
+      <nav class="module-nav"><a href="/operations">Üretim ve işletme merkezi →</a></nav><div class="headrow"><div><div class="eyebrow">KURUMSAL KONTROL MERKEZİ</div><h1>API kullanımı</h1><p class="muted">Gerçek token kullanımını ve son doğrulanan kredi bakiyeni tek ekranda takip et.</p></div><button class="outline" id="refresh">↻ Yenile</button></div>
       <div class="cards">
         <div class="card metric"><div class="meta">DOĞRULANAN API KREDİSİ <span class="dot amber"></span></div><div class="value" id="balance">—</div><div class="hint" id="balanceAt">Henüz kayıt girilmedi</div><button id="openBalance" class="linkbutton">Bakiyeyi güncelle</button></div>
         <div class="card metric"><div class="meta">BU AY API MALİYETİ</div><div class="value" id="spent">—</div><div class="hint">OpenAI maliyet API'sinden • USD</div></div>

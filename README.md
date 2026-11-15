@@ -28,3 +28,10 @@ Mevcut Sites uygulamasına güvenli entegre etme: [`api-panel/INTEGRATION_SITES.
 ## Diğer belgeler
 
 Mevcut `docs/` mühendislik rehberleri ve `cases/` iş örnekleri korunmuştur.
+
+
+## Üretim ve işletme MVP — 2026-11-15
+- [Mobil/PC ortak kayıt ve API maliyet paneli](api-panel/README_TR.md) (`/operations`)
+- [MVP mimarisi, güvenlik ve yol haritası](docs/08_MVP_Implementation_Plan.md)
+- Başlangıç: `cd api-panel` → `.env.example` dosyasını `.env` kopyalayın → `DASHBOARD_PASSWORD` belirleyin → `npm test` → `npm start`.
+- Not: Canlı ChatGPT Sites uygulaması ile aynı deploy değildir. Canlı sürüm henüz güncellenmedi.
